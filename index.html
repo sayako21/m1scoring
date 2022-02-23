@@ -1,0 +1,152 @@
+<link href="css/odometer-theme-default.css" rel="stylesheet" type="text/css" >
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet" type="text/css" >
+<link href="css/all.min.css" rel="stylesheet">
+
+<body class="bg-dark center-block py-3">
+    <audio src="tympany.mp3" id="tympany"></audio>
+    <audio src="tympany_last.mp3" id="tympany-last"></audio>
+    <div class="m-5">
+        <a class="btn btn-radius-solid" id="bgm-start-btn"><i class="fa-solid fa-drum"></i></a>
+        <a class="btn btn-radius-solid" id="bgm-start-btn" href=""><i class="fa-solid fa-rotate-right"></i></a>
+        <p class="mb-0 total-score col-12 col-md-6"><span class="odometer" id="total">000</span></p>
+        <p class="p-0 total-score presenter" id="presenter">発表者</p>
+    </div>
+    <div class="row m-0 p-0">
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo01">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer01">採点者</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo02">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer02">採点者</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo03">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer03">採点者</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo04">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer04">採点者</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo05">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer05">採点者</p>
+        </div>
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 m-0 p-0">
+            <p class="mb-0 score"><span class="odometer" id="odo06">00</span></p>
+            <p class="p-0 score reviewer" id="reviewer06">採点者</p>
+        </div>
+    </div>
+    <div id="overlay">
+        <div class="cv-drum">
+            <span class="drum"><i class="fa-solid fa-drum"></i></span>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/odometer.min.js"></script>
+
+    <script>
+        // スコアの切り替わり時に画面が乱れるため表示
+        $("#overlay").fadeIn(100);
+        setTimeout(function(){
+            $("#overlay").fadeOut(500);
+        }, 500);
+
+        var cnt = 1;
+        const api = 'https://sheets.googleapis.com/v4/spreadsheets/1CeGkiylX_5LIw7cDan1zw3zrNFCPpbrpPlNkwDyX7fE/values/m1_score?key=AIzaSyBsJiJ0o2H5lDgGKMz6fBrALC0iy6Z_pqI';
+        $.ajax({
+            type: 'GET',
+            url: api,
+            dataType: 'jsonp',
+            cache: false,
+            success: function(data){
+                var reviewers = data.values[0];
+                var NumberOfReviewers = data.values[0].length-2;
+                var scores = data.values;
+
+                $("#reviewer01").text(reviewers[1])
+                $("#reviewer02").text(reviewers[2])
+                $("#reviewer03").text(reviewers[3])
+                $("#reviewer04").text(reviewers[4])
+                $("#reviewer05").text(reviewers[5])
+                $("#reviewer06").text(reviewers[6])
+                $("#presenter").text(scores[1][0])
+
+                var cnt = 1;
+                $('#bgm-start-btn').click(function(){
+                    $('#tympany').get(0).play();
+
+                    // ボタン2回目押されたら音だけ流れてしまうのでリロードする
+                    if (cnt == 2) {
+                        location.reload();
+                    }
+
+                    var time = 500;
+                    for (var i=1; i<NumberOfReviewers; i++) {
+                        var odoScore = scores[1];
+                        var totalScore = odoScore[7];
+
+                        // setTimeoutするときは無名関数を一段かませることにより引数を渡せる
+                        var setOdo01 = setInterval(function () {
+                            $('#odo01').html(odoScore[1]);
+                        }, time*1);
+                        setTimeout(function(){
+                            (setOdo01);
+                        }, time*1);
+
+                        var setOdo02 = setInterval(function () {
+                            $('#odo02').html(odoScore[2]);
+                        }, time*2);
+                        setTimeout(function(){
+                            (setOdo02);
+                        }, time*2);
+
+                        var setOdo03 = setInterval(function () {
+                            $('#odo03').html(odoScore[3]);
+                        }, time*3);
+                        setTimeout(function(){
+                            (setOdo03);
+                        }, time*3);
+
+                        var setOdo04 = setInterval(function () {
+                            $('#odo04').html(odoScore[4]);
+                        }, time*4);
+                        setTimeout(function(){
+                            (setOdo04);
+                        }, time*4);
+
+                        var setOdo05 = setInterval(function () {
+                            $('#odo05').html(odoScore[5]);
+                        }, time*5);
+                        setTimeout(function(){
+                            (setOdo05);
+                        }, time*5);
+
+                        var setOdo06 = setInterval(function () {
+                            $('#odo06').html(odoScore[6]);
+                        }, time*6);
+                        setTimeout(function(){
+                            (setOdo06);
+                        }, time*6);
+
+                        var setTotalScore= setInterval(function () {
+                            $('#total').html(totalScore);
+                        }, time*8);
+                        setTimeout(function(){
+                            (setTotalScore);
+                        }, time*8);
+
+                        setTimeout(function(){
+                            $('#tympany-last').get(0).play();
+                        }, time*12);
+                    }
+                    cnt++;
+                });
+            },
+            error: function(){
+                console.log('error');
+            }
+        });
+    </script>
+</body>
