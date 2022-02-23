@@ -10,8 +10,13 @@ https://docs.google.com/spreadsheets/d/1CeGkiylX_5LIw7cDan1zw3zrNFCPpbrpPlNkwDyX
 採点者6人用です。
 
 
-# demo
+## デモ
 音が出ます。音量に注意してください。
 
 https://user-images.githubusercontent.com/63695015/155268332-7c45be84-eedf-441b-9087-b69e9519a47c.mp4
 
+## ライブラリ
+・bootstrap<br>
+・jQuery<br>
+・Font Awesome<br>
+・odometer<br>
